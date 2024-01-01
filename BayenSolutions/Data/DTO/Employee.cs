@@ -13,6 +13,7 @@ namespace BayenSolutions.Data.DTO
         public double Salary { get; set; }
         public EmployeeRole EmployeeRole { get; set; }
         public string UniqueIdentificationNumber { get; set; }
+       
 
         public override string ToString()
         {

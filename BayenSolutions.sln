@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BayenSolutions", "BayenSolutions\BayenSolutions.csproj", "{B00A225F-3E4A-4DB5-A7E6-7BC5F72E233D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp", "ConsoleApp\ConsoleApp.csproj", "{79F28F32-22E6-4B5D-A5ED-0DE3A848305B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{B00A225F-3E4A-4DB5-A7E6-7BC5F72E233D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B00A225F-3E4A-4DB5-A7E6-7BC5F72E233D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B00A225F-3E4A-4DB5-A7E6-7BC5F72E233D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79F28F32-22E6-4B5D-A5ED-0DE3A848305B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79F28F32-22E6-4B5D-A5ED-0DE3A848305B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79F28F32-22E6-4B5D-A5ED-0DE3A848305B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79F28F32-22E6-4B5D-A5ED-0DE3A848305B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
