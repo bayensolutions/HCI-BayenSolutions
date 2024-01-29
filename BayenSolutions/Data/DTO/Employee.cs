@@ -17,7 +17,7 @@ namespace BayenSolutions.Data.DTO
 
         public override string ToString()
         {
-            return base.ToString() + " " + Nickname + " " + PasswordHash + " " + Salary + " " + EmployeeRole.ToString() + UniqueIdentificationNumber;
+            return base.ToString() + " " + Nickname + " " + PasswordHash + " " + Salary + " " + EmployeeRole.ToString() + " " + UniqueIdentificationNumber;
         }
     }
 }

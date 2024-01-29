@@ -12,7 +12,6 @@ namespace BayenSolutions.Data.DAO.MySQL
 {
     public class PersonDAOImpl : IPersonDAO
     {
-
         public List<Person> GetPersons()
         {
             List<Person> list = new List<Person>();
@@ -169,7 +168,7 @@ namespace BayenSolutions.Data.DAO.MySQL
                 MySQLUtil.CloseQuietly(conn);
             }
         }
-
+        
         public List<Employee> GetEmployees()
         {
             List<Employee> list = new List<Employee>();
@@ -183,22 +182,27 @@ namespace BayenSolutions.Data.DAO.MySQL
                 MySqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    list.Add(new Employee(
-                        id: reader.GetInt32(0),
-                        name: reader.GetString(1),
-                        surname: reader.GetString(2),
-                        telephone: reader.GetString(3),
-                        place: new Place()
+                    list.Add(new Employee()
+                    {
+                        Id= reader.GetInt32(0),
+                        Name= reader.GetString(1),
+                        Surname= reader.GetString(2),
+                        Telephone= reader.GetString(3),
+                        Place= new Place()
                         {
                             ZipCode = reader.GetString(4),
                             Name = reader.GetString(5),
                         },
-                        nickname: reader.GetString(6),
-                        passwordHash: reader.GetString(7),
-                        salary: reader.GetDouble(8),
-                        employeeRole: (EmployeeRole)Enum.Parse(typeof(EmployeeRole), reader.GetInt32(9).ToString()),
-                        uniqueIdentificationNumber: reader.GetString(10)
-                    ));
+                        Nickname= reader.GetString(6),
+                        PasswordHash= reader.GetString(7),
+                        Salary= reader.GetDouble(8),
+                        EmployeeRole= new EmployeeRole()
+                        {
+                            Id= reader.GetInt32(9),
+                            Role=reader.GetString(10),
+                        },
+                        UniqueIdentificationNumber= reader.GetString(11)
+                    });
                 }
                 return list;
             }
@@ -212,21 +216,89 @@ namespace BayenSolutions.Data.DAO.MySQL
             }
         }
 
-
-
         public bool AddEmployee(Employee employee)
         {
-            throw new NotImplementedException();
+            bool result = false;
+            MySqlConnection conn = null;
+            MySqlCommand cmd;
+            try
+            {
+                int index = AddPerson(employee);
+                conn = MySQLUtil.GetMySQLConnection();
+                cmd = new MySqlCommand("dodavanjeZaposlenog", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.Add("@pIdOsoba", MySqlDbType.String).Value = index;
+                cmd.Parameters.Add("@pKorisničkoIme", MySqlDbType.String).Value = employee.Nickname;
+                cmd.Parameters.Add("@pOtisakLozinke", MySqlDbType.String).Value = employee.PasswordHash;
+                cmd.Parameters.Add("@pPlata", MySqlDbType.Double).Value = employee.Salary;
+                cmd.Parameters.Add("@pJMBG", MySqlDbType.String).Value = employee.UniqueIdentificationNumber;
+                cmd.Parameters.Add("@pIdUloga", MySqlDbType.Int32).Value = employee.EmployeeRole.Id;
+                cmd.ExecuteNonQuery();
+                result = cmd.ExecuteNonQuery() == 1;
+            }
+            catch (Exception ex)
+            {
+                throw new DataAccessException("Exception in TableDAOImpl", ex);
+            }
+            finally
+            {
+                MySQLUtil.CloseQuietly(conn);
+            }
+            return result;
         }
 
         public bool DeleteEmployee(Employee employee)
         {
-            throw new NotImplementedException();
+            bool result = false;
+            MySqlConnection conn = null;
+            MySqlCommand cmd;
+            try
+            {
+                conn = MySQLUtil.GetMySQLConnection();
+                cmd = conn.CreateCommand();
+                cmd.CommandText = "CALL brisanjeZaposlenog(?)";
+                cmd.Parameters.AddWithValue("@IdOsoba", employee.Id);
+                result = cmd.ExecuteNonQuery() == 1;
+                DeletePerson(employee);
+            }
+            catch (Exception ex)
+            {
+                throw new DataAccessException("Exception in TableDAOImpl", ex);
+            }
+            finally
+            {
+                MySQLUtil.CloseQuietly(conn);
+            }
+            return result;
         }
 
         public bool UpdateEmployee(Employee employee)
         {
-            throw new NotImplementedException();
+            bool result = false;
+            MySqlConnection conn = null;
+            MySqlCommand cmd;
+            try
+            {
+                conn = MySQLUtil.GetMySQLConnection();
+                cmd = new MySqlCommand("izmjenaZaposlenog", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.Add("@pIdZaposlenog", MySqlDbType.Int32).Value = employee.Id;
+                cmd.Parameters.Add("@pKorisničkoIme", MySqlDbType.String).Value = employee.Nickname;
+                cmd.Parameters.Add("@pOtisakLozinke", MySqlDbType.String).Value = employee.PasswordHash;
+                cmd.Parameters.Add("@pPlata", MySqlDbType.Double).Value = employee.Salary;
+                cmd.Parameters.Add("@pJMBG", MySqlDbType.String).Value = employee.UniqueIdentificationNumber;
+                cmd.Parameters.Add("@pIdUloga", MySqlDbType.Int32).Value = employee.EmployeeRole.Id;
+                result = cmd.ExecuteNonQuery() == 1;
+            }
+            catch (Exception ex)
+            {
+                throw new DataAccessException("Exception in TableDAOImpl", ex);
+            }
+            finally
+            {
+                MySQLUtil.CloseQuietly(conn);
+            }
+            return result;
         }
     }
 }

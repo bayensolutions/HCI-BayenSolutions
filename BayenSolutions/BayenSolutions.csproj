@@ -8,9 +8,27 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Forms\" />
+    <None Remove="Resources\photos\AI.png" />
+    <None Remove="Resources\photos\DJI_0441.JPG" />
+    <None Remove="Resources\photos\exit.png" />
+    <None Remove="Resources\photos\password.png" />
+    <None Remove="Resources\photos\username.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\photos\AI.png" />
+    <Resource Include="Resources\photos\exit.png" />
+    <Resource Include="Resources\photos\password.png" />
+    <Resource Include="Resources\photos\username.png" />
+    <Content Include="Resources\photos\DJI_0441.JPG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Forms\Controls\" />
+    <Folder Include="Forms\Pages\" />
     <Folder Include="ViewModel\" />
-    <Folder Include="Resources\" />
   </ItemGroup>
 
   <ItemGroup>
